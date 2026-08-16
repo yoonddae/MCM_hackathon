@@ -38,14 +38,16 @@
 }
 
 body {
-  background: #f1f5f9;
+  background: #ffffff;
   color: var(--text-main);
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* 가로 스크롤 및 가로 드래그 방지 */
+  touch-action: pan-y; /* 세로 스크롤만 허용 */
 }
 
+/* 화면 전체 꽉 차게 설정 */
 .app-container {
   width: 100vw;
   height: 100vh;
@@ -53,7 +55,8 @@ body {
   max-height: none;
   background: var(--bg-gradient);
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden; /* 가로 이탈 방지 */
+  overflow-y: hidden;
   box-shadow: none;
   border-radius: 0;
   border: none;
@@ -71,7 +74,9 @@ body {
   transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   padding: 24px 20px 32px;
   background: var(--bg-gradient);
+  overflow-x: hidden; /* 가로 스크롤 방지 */
   overflow-y: auto;
+  touch-action: pan-y; /* 세로 터치 스크롤만 동작 */
 }
 
 .screen.active {
