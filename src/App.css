@@ -1,51 +1,54 @@
 /* =========================================================
-   1. KEYFRAMES (최상단 선언: 디지털 글리치 & 홀로그램 빔 효과)
+   1. KEYFRAMES (영상과 100% 동일한 버튼 찌그러짐 지지직 글리치)
    ========================================================= */
 
-/* 배경 그라데이션이 끊기듯 치직거리며 색상이 변하는 효과 */
-@keyframes hologramGlitch {
+/* 버튼 전체가 순간적으로 떨리고 찌그러지는 모션 */
+@keyframes buttonGlitchShake {
   0% {
-    background-position: 0% 50%;
-    filter: hue-rotate(0deg) brightness(1);
+    transform: translate(0, 0) skew(0deg);
   }
   20% {
-    background-position: 100% 50%;
-    filter: hue-rotate(15deg) brightness(1.15);
+    transform: translate(-3px, 2px) skew(-2deg);
   }
   40% {
-    background-position: 30% 100%;
-    filter: hue-rotate(-10deg) brightness(0.95);
+    transform: translate(3px, -1px) skew(2deg);
   }
   60% {
-    background-position: 80% 0%;
-    filter: hue-rotate(20deg) brightness(1.2);
+    transform: translate(-2px, -2px) skew(-1deg);
   }
   80% {
-    background-position: 10% 40%;
-    filter: hue-rotate(-5deg) brightness(1.05);
+    transform: translate(2px, 1px) skew(1deg);
   }
   100% {
-    background-position: 0% 50%;
-    filter: hue-rotate(0deg) brightness(1);
+    transform: translate(0, 0) skew(0deg);
   }
 }
 
-/* 네온 빛 줄기가 버튼 표면을 순간적으로 스쳐 지나가는 스캔 효과 */
-@keyframes neonScan {
+/* 가로 띠 형태로 버튼이 찢어지며 튀는 효과 (clip-path) */
+@keyframes glitchSlice {
   0% {
-    left: -120%;
-    opacity: 0;
+    clip-path: inset(40% 0 61% 0);
+    transform: translate(-6px, 0);
   }
-  15% {
-    opacity: 0.8;
+  20% {
+    clip-path: inset(92% 0 1% 0);
+    transform: translate(6px, 0);
   }
-  35% {
-    left: 130%;
-    opacity: 0;
+  40% {
+    clip-path: inset(10% 0 86% 0);
+    transform: translate(-4px, 0);
+  }
+  60% {
+    clip-path: inset(75% 0 5% 0);
+    transform: translate(4px, 0);
+  }
+  80% {
+    clip-path: inset(25% 0 58% 0);
+    transform: translate(-2px, 0);
   }
   100% {
-    left: 130%;
-    opacity: 0;
+    clip-path: inset(0 0 0 0);
+    transform: translate(0, 0);
   }
 }
 
@@ -208,40 +211,30 @@ body {
 }
 
 /* =========================================================
-   3. 글리치 홀로그램 메인 버튼 (.btn-primary)
+   3. 영상 속 진동 지지직 글리치 메인 버튼 (.btn-primary)
    ========================================================= */
 .btn-primary {
   width: 100%;
-  height: 56px;
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  height: 58px;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
   
-  /* 사이버틱 오로라 멀티 컬러 */
+  /* 영상 속 파랑-보라-핑크 오로라 바탕 */
   background: linear-gradient(
-    110deg,
-    #38bdf8 0%,
-    #818cf8 20%,
-    #c084fc 40%,
-    #f472b6 60%,
-    #38bdf8 80%,
-    #60a5fa 100%
+    90deg,
+    #7dd3fc 0%,
+    #a855f7 50%,
+    #f472b6 100%
   ) !important;
-  background-size: 250% 250% !important;
-  
-  /* steps()를 통해 튕기듯 움직이는 글리치 모션 */
-  animation: hologramGlitch 2s steps(10, end) infinite !important;
   
   color: #0f1d30;
   font-size: 16px;
   font-weight: 800;
-  letter-spacing: -0.2px;
+  letter-spacing: -0.3px;
   cursor: pointer;
   
-  /* 네온 발광 입체감 */
-  box-shadow: 0 8px 25px rgba(125, 211, 252, 0.45),
-              inset 0 1px 2px rgba(255, 255, 255, 0.8);
+  box-shadow: 0 8px 25px rgba(168, 85, 247, 0.35);
   
-  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -249,32 +242,54 @@ body {
   flex-shrink: 0;
   position: relative;
   overflow: hidden;
+  
+  /* 영상의 진동 글리치 모션 적용 (0.3초 주기 또는 무한) */
+  animation: buttonGlitchShake 0.25s infinite steps(2) !important;
 }
 
-/* 지지직 스쳐가는 오로라 빛 줄기 레이어 */
+/* 지지직 가로 분할 레이어 1 (영상 속 가로 찢어짐 효과) */
 .btn-primary::before {
-  content: '';
+  content: '결과 저장 및 공유';
   position: absolute;
-  top: -20%;
-  left: -120%;
-  width: 70%;
-  height: 140%;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.2) 20%,
-    rgba(255, 255, 255, 0.85) 50%,
-    rgba(255, 255, 255, 0.2) 80%,
-    transparent 100%
-  );
-  transform: skewX(-25deg);
-  animation: neonScan 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite !important;
+  inset: 0;
+  background: inherit;
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: inherit;
+  
+  /* 가로로 찢어지는 사이버 효과 */
+  animation: glitchSlice 0.3s infinite linear alternate-reverse !important;
+  opacity: 0.8;
   pointer-events: none;
 }
 
+/* 지지직 가로 분할 레이어 2 (역방향 찢어짐) */
+.btn-primary::after {
+  content: '결과 저장 및 공유';
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: inherit;
+  
+  animation: glitchSlice 0.2s infinite linear !important;
+  opacity: 0.6;
+  filter: hue-rotate(90deg);
+  pointer-events: none;
+}
+
+/* 클릭 효과 */
 .btn-primary:active {
   transform: scale(0.96) !important;
-  box-shadow: 0 4px 12px rgba(125, 211, 252, 0.3) !important;
 }
 
 .btn-primary:disabled {
@@ -284,7 +299,8 @@ body {
   animation: none !important;
 }
 
-.btn-primary:disabled::before {
+.btn-primary:disabled::before,
+.btn-primary:disabled::after {
   display: none;
 }
 
@@ -401,7 +417,6 @@ body {
   justify-content: space-between;
 }
 
-/* MCM 로고 박스 (220px 확대) */
 .mcm-logo-box {
   width: 220px;
   height: 220px;
