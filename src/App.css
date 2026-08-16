@@ -1,24 +1,51 @@
 /* =========================================================
-   1. KEYFRAMES (애니메이션을 최상단에 선언하여 인식률 확보)
+   1. KEYFRAMES (최상단 선언: 디지털 글리치 & 홀로그램 빔 효과)
    ========================================================= */
-@keyframes hologramShift {
+
+/* 배경 그라데이션이 끊기듯 치직거리며 색상이 변하는 효과 */
+@keyframes hologramGlitch {
   0% {
     background-position: 0% 50%;
+    filter: hue-rotate(0deg) brightness(1);
   }
-  50% {
+  20% {
     background-position: 100% 50%;
+    filter: hue-rotate(15deg) brightness(1.15);
+  }
+  40% {
+    background-position: 30% 100%;
+    filter: hue-rotate(-10deg) brightness(0.95);
+  }
+  60% {
+    background-position: 80% 0%;
+    filter: hue-rotate(20deg) brightness(1.2);
+  }
+  80% {
+    background-position: 10% 40%;
+    filter: hue-rotate(-5deg) brightness(1.05);
   }
   100% {
     background-position: 0% 50%;
+    filter: hue-rotate(0deg) brightness(1);
   }
 }
 
-@keyframes lightShimmer {
+/* 네온 빛 줄기가 버튼 표면을 순간적으로 스쳐 지나가는 스캔 효과 */
+@keyframes neonScan {
   0% {
-    left: -100%;
+    left: -120%;
+    opacity: 0;
   }
-  60%, 100% {
-    left: 140%;
+  15% {
+    opacity: 0.8;
+  }
+  35% {
+    left: 130%;
+    opacity: 0;
+  }
+  100% {
+    left: 130%;
+    opacity: 0;
   }
 }
 
@@ -181,34 +208,40 @@ body {
 }
 
 /* =========================================================
-   3. 홀로그램 애니메이션 적용 메인 버튼 (.btn-primary)
+   3. 글리치 홀로그램 메인 버튼 (.btn-primary)
    ========================================================= */
 .btn-primary {
   width: 100%;
   height: 56px;
   border-radius: 20px;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.7);
   
-  /* 오로라 홀로그램 그라데이션 */
+  /* 사이버틱 오로라 멀티 컬러 */
   background: linear-gradient(
-    115deg,
-    #7ee0ff 0%,
-    #a5b4fc 25%,
-    #f472b6 50%,
-    #7ee0ff 75%,
-    #c084fc 100%
+    110deg,
+    #38bdf8 0%,
+    #818cf8 20%,
+    #c084fc 40%,
+    #f472b6 60%,
+    #38bdf8 80%,
+    #60a5fa 100%
   ) !important;
-  background-size: 300% 300% !important;
+  background-size: 250% 250% !important;
   
-  /* 배경 좌우 이동 애니메이션 */
-  animation: hologramShift 3s ease infinite !important;
+  /* steps()를 통해 튕기듯 움직이는 글리치 모션 */
+  animation: hologramGlitch 2s steps(10, end) infinite !important;
   
   color: #0f1d30;
   font-size: 16px;
   font-weight: 800;
+  letter-spacing: -0.2px;
   cursor: pointer;
-  box-shadow: 0 8px 20px rgba(126, 224, 255, 0.4);
-  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease, opacity 0.2s ease;
+  
+  /* 네온 발광 입체감 */
+  box-shadow: 0 8px 25px rgba(125, 211, 252, 0.45),
+              inset 0 1px 2px rgba(255, 255, 255, 0.8);
+  
+  transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -218,29 +251,30 @@ body {
   overflow: hidden;
 }
 
-/* 빛이 쓱 지나가는 빔 효과 */
+/* 지지직 스쳐가는 오로라 빛 줄기 레이어 */
 .btn-primary::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: -100%;
-  width: 60%;
-  height: 100%;
+  top: -20%;
+  left: -120%;
+  width: 70%;
+  height: 140%;
   background: linear-gradient(
     90deg,
-    transparent,
-    rgba(255, 255, 255, 0.6),
-    transparent
+    transparent 0%,
+    rgba(255, 255, 255, 0.2) 20%,
+    rgba(255, 255, 255, 0.85) 50%,
+    rgba(255, 255, 255, 0.2) 80%,
+    transparent 100%
   );
-  transform: skewX(-20deg);
-  animation: lightShimmer 2.2s infinite !important;
+  transform: skewX(-25deg);
+  animation: neonScan 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite !important;
   pointer-events: none;
 }
 
-/* 클릭 및 비활성화 상태 정의 */
 .btn-primary:active {
   transform: scale(0.96) !important;
-  box-shadow: 0 4px 10px rgba(126, 224, 255, 0.2) !important;
+  box-shadow: 0 4px 12px rgba(125, 211, 252, 0.3) !important;
 }
 
 .btn-primary:disabled {
@@ -367,6 +401,7 @@ body {
   justify-content: space-between;
 }
 
+/* MCM 로고 박스 (220px 확대) */
 .mcm-logo-box {
   width: 220px;
   height: 220px;
