@@ -516,6 +516,7 @@ html, body, #root {
   font-size: 15px;
   color: var(--text-sub);
   line-height: 1.35;
+  word-break: keep-all;
 }
 
 .tag-group {
@@ -684,6 +685,7 @@ html, body, #root {
   color: #64748b;
   line-height: 1.4;
   text-align: left;
+  word-break: keep-all;
 }
 
 .locked-summary-box {
