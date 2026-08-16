@@ -33,7 +33,7 @@ export default function App() {
   const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
 
-  // 초기값을 INITIAL_PRODUCTS로 설정하여 API 호출 실패 시에도 화면이 비지 않도록 처리
+  // 데이터 State
   const [products, setProducts] = useState(INITIAL_PRODUCTS);
   const [dnaAnalysis, setDnaAnalysis] = useState([]);
   const [heritageLocks, setHeritageLocks] = useState([]);
@@ -72,7 +72,7 @@ export default function App() {
   // [API 1] 제품 목록 조회
   // ==========================================
   const fetchProducts = async () => {
-    if (!API_BASE_URL) return; // API URL이 없으면 Mock Data 유지
+    if (!API_BASE_URL) return;
     try {
       setLoading(true);
       const res = await fetch(`${API_BASE_URL}/api/products`);
@@ -91,7 +91,6 @@ export default function App() {
   // [API 2] DNA 분석 비율 조회
   // ==========================================
   const fetchDnaAnalysis = async (productId) => {
-    // 기본 데이터 세팅 (API 연결 안 되었을 때)
     const fallbackDna = [
       { name: "VISETOS", ratio: 34 },
       { name: "COGNAC COLOR", ratio: 28 },
@@ -156,13 +155,13 @@ export default function App() {
   };
 
   // ==========================================
-  // [API 4] 미래 환경 목록 조회
+  // [API 4] 미래 환경 목록 조회 (Climate Adaptation 제외)
   // ==========================================
   const fetchFutureContexts = async () => {
+    // Climate Adaptation(id: 3)을 제외한 목록
     const fallbackContexts = [
       { id: 1, name: "Space Travel", description: "무중력 이동과 행성 간 여행을 위한 미래 환경" },
       { id: 2, name: "Hyper City", description: "초고밀도 도시의 빠른 이동과 스마트한 보안 환경" },
-      { id: 3, name: "Climate Adaptation", description: "극한 기후에 대응하는 자가 보호형 소재 환경" },
       { id: 4, name: "Virtual Dimension", description: "현실과 디지털 정체성이 연결된 융합 공간" }
     ];
 
@@ -175,7 +174,9 @@ export default function App() {
       setLoading(true);
       const res = await fetch(`${API_BASE_URL}/api/future-contexts`);
       const data = await res.json();
-      setFutureContexts(data.futureContexts || fallbackContexts);
+      const list = data.futureContexts || fallbackContexts;
+      // 백엔드 API에서 들어오더라도 Climate Adaptation 항목 제거 필터링
+      setFutureContexts(list.filter((env) => env.id !== 3 && env.name !== "Climate Adaptation"));
     } catch (err) {
       console.warn("미래 환경 API 실패, 기본 데이터 사용:", err);
       setFutureContexts(fallbackContexts);
@@ -251,7 +252,7 @@ export default function App() {
   const currentProduct = products.find((p) => p.id === selectedProductId);
 
   const getEnvIcon = (id) => {
-    const icons = { 1: "🚀", 2: "🏙️", 3: "🌧️", 4: "🔮" };
+    const icons = { 1: "🚀", 2: "🏙️", 4: "🔮" };
     return icons[id] || "✨";
   };
 
