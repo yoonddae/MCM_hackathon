@@ -1,8 +1,30 @@
 import { useState, useEffect } from 'react';
 import './App.css';
 
-// ⚠️ 백엔드 서버 기본 URL (백엔드 개발자분께 전달받은 주소로 변경하세요)
-const API_BASE_URL = 'https://api.yourdomain.com';
+// ⚠️ 백엔드 개발자분께 전달받은 실제 서버 주소를 넣으세요. (비어있으면 기본 데이터 사용)
+const API_BASE_URL = ''; 
+
+// API 연결 전 기본으로 보여줄 제품 Mock Data
+const INITIAL_PRODUCTS = [
+  {
+    id: 1,
+    name: "Ottomar 비세토스 위켄더",
+    shortDescription: "MCM의 여행용 캐리어 헤리티지와 시그니처 비세토스를 담은 대표 위켄더백",
+    tags: ["VISETOS", "COGNAC_Color", "MOBILITY", "GeoMetric_Structure"]
+  },
+  {
+    id: 2,
+    name: "Stark 사이드 비세토스 백팩",
+    shortDescription: "블랙 비세토스와 피라미드 스터드로 도시적 이동성과 대담한 자기표현을 담은 MCM의 대표 백팩",
+    tags: ["Visetos", "Mobility", "Visible_Identity", "Metal Studs"]
+  },
+  {
+    id: 3,
+    name: "SMCM X We The Best 비세토스 크로스바디 파우치",
+    shortDescription: "코냑 비세토스에 선명한 마이애미 블루와 음악 문화를 결합해 MCM 헤리티지를 자유롭게 재해석한 협업 파우치",
+    tags: ["Visetos", "Miami_Blue", "Adaptive_Styling", "Cultural_Collaboration"]
+  }
+];
 
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState(1);
@@ -11,18 +33,18 @@ export default function App() {
   const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
 
-  // API로부터 받아올 데이터를 담는 State
-  const [products, setProducts] = useState([]);
+  // 초기값을 INITIAL_PRODUCTS로 설정하여 API 호출 실패 시에도 화면이 비지 않도록 처리
+  const [products, setProducts] = useState(INITIAL_PRODUCTS);
   const [dnaAnalysis, setDnaAnalysis] = useState([]);
   const [heritageLocks, setHeritageLocks] = useState([]);
   const [futureContexts, setFutureContexts] = useState([]);
 
-  // 사용자 선택 상태값들
+  // 사용자 선택 상태값
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [selectedDnaIds, setSelectedDnaIds] = useState([]);
   const [selectedContextId, setSelectedContextId] = useState(null);
 
-  // 로딩 및 애니메이션 진행률 State
+  // 로딩 및 애니메이션 State
   const [loading, setLoading] = useState(false);
   const [dnaProgressValues, setDnaProgressValues] = useState([]);
 
@@ -39,7 +61,7 @@ export default function App() {
     return () => clearInterval(timer);
   }, []);
 
-  // 토스트 메시지 함수
+  // 토스트 메시지
   const triggerToast = (msg) => {
     setToastMessage(msg);
     setShowToast(true);
@@ -47,96 +69,132 @@ export default function App() {
   };
 
   // ==========================================
-  // [API 호출 1] 2페이지: 제품 목록 조회
-  // GET /api/products (예시)
+  // [API 1] 제품 목록 조회
   // ==========================================
   const fetchProducts = async () => {
+    if (!API_BASE_URL) return; // API URL이 없으면 Mock Data 유지
     try {
       setLoading(true);
       const res = await fetch(`${API_BASE_URL}/api/products`);
       const result = await res.json();
-      if (result.success) {
+      if (result.success && result.data?.products) {
         setProducts(result.data.products);
       }
     } catch (err) {
-      console.error("제품 목록 로드 실패:", err);
+      console.warn("API 호출 실패로 기본 데이터를 유지합니다:", err);
     } finally {
       setLoading(false);
     }
   };
 
   // ==========================================
-  // [API 호출 2] 3페이지: 선택한 제품의 DNA 분석 비율 조회
-  // GET /api/products/:id/dna (예시)
+  // [API 2] DNA 분석 비율 조회
   // ==========================================
   const fetchDnaAnalysis = async (productId) => {
+    // 기본 데이터 세팅 (API 연결 안 되었을 때)
+    const fallbackDna = [
+      { name: "VISETOS", ratio: 34 },
+      { name: "COGNAC COLOR", ratio: 28 },
+      { name: "MOBILITY", ratio: 23 },
+      { name: "VISIBLE IDENTITY", ratio: 15 }
+    ];
+
+    if (!API_BASE_URL) {
+      setDnaAnalysis(fallbackDna);
+      setDnaProgressValues([0, 0, 0, 0]);
+      setTimeout(() => setDnaProgressValues([34, 28, 23, 15]), 150);
+      return;
+    }
+
     try {
       setLoading(true);
       const res = await fetch(`${API_BASE_URL}/api/products/${productId}/dna`);
       const data = await res.json();
-      // 명세서 응답 형태: { archiveProductId: 1, dnaAnalysis: [...] }
-      const analysisData = data.dnaAnalysis || [];
+      const analysisData = data.dnaAnalysis || fallbackDna;
       setDnaAnalysis(analysisData);
 
-      // DNA 애니메이션 진행률 설정
       setDnaProgressValues(analysisData.map(() => 0));
       setTimeout(() => {
         setDnaProgressValues(analysisData.map((item) => item.ratio));
       }, 150);
     } catch (err) {
-      console.error("DNA 분석 로드 실패:", err);
+      console.warn("DNA API 실패, 기본 데이터 사용:", err);
+      setDnaAnalysis(fallbackDna);
+      setDnaProgressValues([34, 28, 23, 15]);
     } finally {
       setLoading(false);
     }
   };
 
   // ==========================================
-  // [API 호출 3] 4페이지: Heritage Lock 옵션 조회
-  // GET /api/products/:id/heritage-locks (예시)
+  // [API 3] Heritage Lock 옵션 조회
   // ==========================================
   const fetchHeritageLocks = async (productId) => {
+    const fallbackLocks = [
+      { id: 1, name: "Visetos", description: "MCM을 즉시 인식하게 하는 시그니처 모노그램" },
+      { id: 2, name: "Cognac Color", description: "브랜드 헤리티지를 보여주는 따뜻한 코냑 색감" },
+      { id: 3, name: "Mobility", description: "여행과 이동이라는 MCM의 본질적인 가치" },
+      { id: 4, name: "Structure", description: "트렁크에서 이어지는 입체적이고 기하학적인 형태" }
+    ];
+
+    if (!API_BASE_URL) {
+      setHeritageLocks(fallbackLocks);
+      return;
+    }
+
     try {
       setLoading(true);
       const res = await fetch(`${API_BASE_URL}/api/products/${productId}/heritage-locks`);
       const data = await res.json();
-      // 명세서 응답 형태: { archiveProductId: 1, heritageLockOptions: [...] }
-      setHeritageLocks(data.heritageLockOptions || []);
+      setHeritageLocks(data.heritageLockOptions || fallbackLocks);
     } catch (err) {
-      console.error("Heritage Lock 옵션 로드 실패:", err);
+      console.warn("Heritage Lock API 실패, 기본 데이터 사용:", err);
+      setHeritageLocks(fallbackLocks);
     } finally {
       setLoading(false);
     }
   };
 
   // ==========================================
-  // [API 호출 4] 5페이지: 미래 환경 목록 조회
-  // GET /api/future-contexts (예시)
+  // [API 4] 미래 환경 목록 조회
   // ==========================================
   const fetchFutureContexts = async () => {
+    const fallbackContexts = [
+      { id: 1, name: "Space Travel", description: "무중력 이동과 행성 간 여행을 위한 미래 환경" },
+      { id: 2, name: "Hyper City", description: "초고밀도 도시의 빠른 이동과 스마트한 보안 환경" },
+      { id: 3, name: "Climate Adaptation", description: "극한 기후에 대응하는 자가 보호형 소재 환경" },
+      { id: 4, name: "Virtual Dimension", description: "현실과 디지털 정체성이 연결된 융합 공간" }
+    ];
+
+    if (!API_BASE_URL) {
+      setFutureContexts(fallbackContexts);
+      return;
+    }
+
     try {
       setLoading(true);
       const res = await fetch(`${API_BASE_URL}/api/future-contexts`);
       const data = await res.json();
-      // 명세서 응답 형태: { futureContexts: [...] }
-      setFutureContexts(data.futureContexts || []);
+      setFutureContexts(data.futureContexts || fallbackContexts);
     } catch (err) {
-      console.error("미래 환경 목록 로드 실패:", err);
+      console.warn("미래 환경 API 실패, 기본 데이터 사용:", err);
+      setFutureContexts(fallbackContexts);
     } finally {
       setLoading(false);
     }
   };
 
-  // 화면 전환 시 필요한 API 자동 호출
+  // 화면 이동 시 호출
   const goToScreen = (screenNum) => {
     setCurrentScreen(screenNum);
 
-    if (screenNum === 2 && products.length === 0) {
+    if (screenNum === 2) {
       fetchProducts();
     } else if (screenNum === 3 && selectedProductId) {
       fetchDnaAnalysis(selectedProductId);
     } else if (screenNum === 4 && selectedProductId) {
       fetchHeritageLocks(selectedProductId);
-    } else if (screenNum === 5 && futureContexts.length === 0) {
+    } else if (screenNum === 5) {
       fetchFutureContexts();
     }
   };
@@ -154,8 +212,7 @@ export default function App() {
   };
 
   // ==========================================
-  // [API 호출 5] POST: 최종 AI 생성 요청
-  // POST /api/generate (예시)
+  // [API 5] POST: 최종 AI 생성 요청
   // ==========================================
   const handleGenerate = async () => {
     const requestPayload = {
@@ -163,6 +220,11 @@ export default function App() {
       lockedDnaIds: selectedDnaIds,
       futureContextId: selectedContextId
     };
+
+    if (!API_BASE_URL) {
+      alert(`[테스트 성공]\n요청 데이터:\n${JSON.stringify(requestPayload, null, 2)}`);
+      return;
+    }
 
     try {
       setLoading(true);
@@ -173,10 +235,9 @@ export default function App() {
       });
       const result = await res.json();
 
-      // 명세서 응답: { success: true, data: { generationId: 101, status: "GENERATING" } }
       if (result.success) {
         alert(
-          `[생성 요청 API 완료]\n- Generation ID: ${result.data.generationId}\n- Status: ${result.data.status}\n\nAI 생성 요청이 정상 처리되었습니다.`
+          `[생성 요청 성공]\nGeneration ID: ${result.data.generationId}\nStatus: ${result.data.status}`
         );
       }
     } catch (err) {
@@ -189,7 +250,6 @@ export default function App() {
 
   const currentProduct = products.find((p) => p.id === selectedProductId);
 
-  // 환경 아이콘 매핑 (명세서에 아이콘이 없다면 임의 지정)
   const getEnvIcon = (id) => {
     const icons = { 1: "🚀", 2: "🏙️", 3: "🌧️", 4: "🔮" };
     return icons[id] || "✨";
@@ -197,7 +257,6 @@ export default function App() {
 
   return (
     <div className="app-container">
-      {/* 로딩 표시 */}
       {loading && <div className="loading-overlay">데이터를 불러오는 중...</div>}
 
       {/* 미리보기 모달 */}
@@ -288,7 +347,6 @@ export default function App() {
               }}
             >
               <div className="card-img-wrap">
-                {/* 명세서에 이미지 경로가 없을 경우를 대비한 기본값 처리 */}
                 <img src={prod.img || `/p2_image${prod.id}_2.png`} alt={prod.name} onError={(e) => (e.target.src = 'https://via.placeholder.com/90?text=MCM')} />
               </div>
               <div className="card-info">
