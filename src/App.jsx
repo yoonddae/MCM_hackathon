@@ -177,7 +177,7 @@ export default function App() {
         </div>
         <div className="home-hero">
           <div className="home-sub">FROM HERITAGE TO THE NEXT CENTURY</div>
-          <h1 className="home-title">MCM TIME PORTAL 2076</h1>
+          <h1 className="home-title">MCM TIME<br />PORTAL 2076</h1>
           <p className="home-desc">
             MCM의 과거를 선택하고<br />다음 세기의 제품을 직접 설계하세요.
           </p>
@@ -218,7 +218,7 @@ export default function App() {
         {/* 요청 3: 2페이지 글씨 좌측 붙임 */}
         <div>
           <div className="sub-caption">ARCHIVE 1976–2026</div>
-          <h1 className="page-title">어떤 MCM에서 시작할까요?</h1>
+          <h1 className="page-title">어떤 MCM에서<br />시작할까요?</h1>
           <p className="page-desc">미래로 번역할 아카이브 제품을 선택해주세요.</p>
         </div>
 
@@ -279,7 +279,7 @@ export default function App() {
         {/* 요청 4: 3페이지 글씨 좌측 붙임 */}
         <div>
           <div className="sub-caption">HERITAGE ANALYSIS</div>
-          <h1 className="page-title">이 제품의 DNA를 분해해볼게요</h1>
+          <h1 className="page-title">이 제품의 DNA를<br />분해해볼게요</h1>
           <p className="page-desc">MCM을 MCM답게 만드는 시각적·기능적 요소를 보여줍니다.</p>
         </div>
 
@@ -338,7 +338,7 @@ export default function App() {
 
         <div>
           <div className="sub-caption">KEEP THE IDENTITY</div>
-          <h1 className="page-title">100년 뒤에도 남길 MCM DNA를 골라주세요</h1>
+          <h1 className="page-title">100년 뒤에도 남길<br />MCM DNA를 골라주세요</h1>
           <p className="page-desc">최소 1개가 미래 제품에 반드시 유지됩니다.</p>
         </div>
 
@@ -402,7 +402,7 @@ export default function App() {
 
         <div>
           <div className="sub-caption">WELCOME TO 2076</div>
-          <h1 className="page-title">2076년, 이 제품은 어디에서 사용될까요?</h1>
+          <h1 className="page-title">2076년, 이 제품은<br />어디에서 사용될까요?</h1>
           <p className="page-desc">미래 환경에 따라 기능과 소재가 자동으로 설계됩니다.</p>
         </div>
 
