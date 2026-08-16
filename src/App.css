@@ -47,16 +47,16 @@ body {
 }
 
 .app-container {
-  width: 100%;
-  max-width: 420px;
+  width: 100vw;
   height: 100vh;
-  max-height: 880px;
+  max-width: none;
+  max-height: none;
   background: var(--bg-gradient);
   position: relative;
   overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-  border-radius: 36px;
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: none;
+  border-radius: 0;
+  border: none;
 }
 
 /* 화면 전환 공통 */
@@ -389,21 +389,23 @@ body {
   width: 220px;
   height: 220px;
   border-radius: 48px;
-  overflow: hidden; /* 이미지 튀어나옴 방지 */
+  overflow: hidden; /* 영역 밖 잘라내기 */
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 20px 40px rgba(186, 230, 253, 0.5);
   margin-top: 24px;
   margin-bottom: 20px;
-  padding: 0; /* 여백 제거 */
+  padding: 0;
   border: 4px solid #ffffff;
+  background: #ffffff;
 }
 
 .mcm-logo-box img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* 네모틀에 여백없이 꽉 차도록 설정 */
+  object-fit: cover;
+  transform: scale(1.35); /* 로고 이미지 주변의 흰 여백을 자르고 중앙 로고를 틀에 꽉 채움 */
 }
 
 .home-hero {
