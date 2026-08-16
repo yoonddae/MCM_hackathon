@@ -98,10 +98,16 @@ export default function App() {
       { name: "VISIBLE IDENTITY", ratio: 15 }
     ];
 
+    const applyProgressAnimation = (analysisData) => {
+      setDnaProgressValues(analysisData.map(() => 0));
+      setTimeout(() => {
+        setDnaProgressValues(analysisData.map((item) => item.ratio));
+      }, 200);
+    };
+
     if (!API_BASE_URL) {
       setDnaAnalysis(fallbackDna);
-      setDnaProgressValues([0, 0, 0, 0]);
-      setTimeout(() => setDnaProgressValues([34, 28, 23, 15]), 150);
+      applyProgressAnimation(fallbackDna);
       return;
     }
 
@@ -111,15 +117,11 @@ export default function App() {
       const data = await res.json();
       const analysisData = data.dnaAnalysis || fallbackDna;
       setDnaAnalysis(analysisData);
-
-      setDnaProgressValues(analysisData.map(() => 0));
-      setTimeout(() => {
-        setDnaProgressValues(analysisData.map((item) => item.ratio));
-      }, 150);
+      applyProgressAnimation(analysisData);
     } catch (err) {
       console.warn("DNA API 실패, 기본 데이터 사용:", err);
       setDnaAnalysis(fallbackDna);
-      setDnaProgressValues([34, 28, 23, 15]);
+      applyProgressAnimation(fallbackDna);
     } finally {
       setLoading(false);
     }
@@ -155,10 +157,9 @@ export default function App() {
   };
 
   // ==========================================
-  // [API 4] 미래 환경 목록 조회 (Climate Adaptation 제외)
+  // [API 4] 미래 환경 목록 조회
   // ==========================================
   const fetchFutureContexts = async () => {
-    // Climate Adaptation(id: 3)을 제외한 목록
     const fallbackContexts = [
       { id: 1, name: "Space Travel", description: "무중력 이동과 행성 간 여행을 위한 미래 환경" },
       { id: 2, name: "Hyper City", description: "초고밀도 도시의 빠른 이동과 스마트한 보안 환경" },
@@ -175,7 +176,6 @@ export default function App() {
       const res = await fetch(`${API_BASE_URL}/api/future-contexts`);
       const data = await res.json();
       const list = data.futureContexts || fallbackContexts;
-      // 백엔드 API에서 들어오더라도 Climate Adaptation 항목 제거 필터링
       setFutureContexts(list.filter((env) => env.id !== 3 && env.name !== "Climate Adaptation"));
     } catch (err) {
       console.warn("미래 환경 API 실패, 기본 데이터 사용:", err);
@@ -251,9 +251,15 @@ export default function App() {
 
   const currentProduct = products.find((p) => p.id === selectedProductId);
 
-  const getEnvIcon = (id) => {
+  const getEnvIcon = (env) => {
     const icons = { 1: "🚀", 2: "🏙️", 4: "🔮" };
-    return icons[id] || "✨";
+    if (icons[env.id]) return icons[env.id];
+    
+    const nameLower = (env.name || '').toLowerCase();
+    if (nameLower.includes('space')) return "🚀";
+    if (nameLower.includes('city')) return "🏙️";
+    if (nameLower.includes('virtual')) return "🔮";
+    return "✨";
   };
 
   return (
@@ -456,6 +462,7 @@ export default function App() {
           <p className="page-desc">최소 1개가 미래 제품에 반드시 유지됩니다.</p>
         </div>
 
+        {/* 2x2 카드 그리드 */}
         <div className="dna-grid">
           {heritageLocks.map((item) => {
             const isSelected = selectedDnaIds.includes(item.id);
@@ -467,7 +474,7 @@ export default function App() {
               >
                 <div className="dna-card-header">
                   <div className="dna-card-title">{item.name}</div>
-                  <span className="locked-badge">LOCKED</span>
+                  {isSelected && <span className="locked-badge">LOCKED</span>}
                 </div>
                 <div className="dna-card-desc">{item.description}</div>
               </div>
@@ -475,19 +482,25 @@ export default function App() {
           })}
         </div>
 
+        {/* 하단 Locked DNA 요약 박스 */}
         <div className="locked-summary-box">
-          <div>Locked DNA</div>
-          <div className="summary-tag-wrap">
+          <div className="summary-title">Locked DNA</div>
+          <div className="summary-content">
             {selectedDnaIds.length === 0
               ? '선택된 DNA가 없습니다.'
               : selectedDnaIds
-                  .map((id) => heritageLocks.find((d) => d.id === id)?.name)
+                  .map((id) => heritageLocks.find((d) => d.id === id)?.name?.toUpperCase())
                   .filter(Boolean)
                   .join(' · ')}
           </div>
         </div>
 
-        <button className="btn-primary" data-text="미래 환경 선택하기" disabled={selectedDnaIds.length === 0} onClick={() => goToScreen(5)}>
+        <button
+          className="btn-primary"
+          data-text="미래 환경 선택하기"
+          disabled={selectedDnaIds.length === 0}
+          onClick={() => goToScreen(5)}
+        >
           미래 환경 선택하기
         </button>
       </div>
@@ -528,7 +541,7 @@ export default function App() {
               className={`env-card ${selectedContextId === env.id ? 'selected' : ''}`}
               onClick={() => setSelectedContextId(env.id)}
             >
-              <div className="env-icon-wrap">{getEnvIcon(env.id)}</div>
+              <div className="env-icon-wrap">{getEnvIcon(env)}</div>
               <div className="env-info">
                 <div className="env-title">{env.name}</div>
                 <div className="env-desc">{env.description}</div>
