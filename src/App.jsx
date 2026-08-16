@@ -129,16 +129,6 @@ export default function App() {
 
     console.log('API Request Body:', requestPayload);
 
-    // 실제 백엔드 연동 시 fetch 사용 예시:
-    /*
-    const res = await fetch('/api/v1/portal/generate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(requestPayload)
-    });
-    const result = await res.json();
-    */
-
     const selectedProduct = API_PRODUCTS.find(p => p.id === selectedProductId);
     const selectedEnv = API_FUTURE_CONTEXTS.find(e => e.id === selectedContextId);
 
@@ -191,7 +181,7 @@ export default function App() {
           </p>
         </div>
         <div style={{ width: '100%', maxWidth: '600px', marginTop: 'auto', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <button className="btn-primary" onClick={() => goToScreen(2)}>
+          <button className="btn-primary" data-text="TIME PORTAL ENTER" onClick={() => goToScreen(2)}>
             TIME PORTAL ENTER
           </button>
           <button className="btn-secondary" onClick={() => setIsPreviewModalOpen(true)}>
@@ -255,7 +245,7 @@ export default function App() {
           ))}
         </div>
 
-        <button className="btn-primary" disabled={!selectedProductId} onClick={() => goToScreen(3)}>
+        <button className="btn-primary" data-text="이 제품으로 시작하기" disabled={!selectedProductId} onClick={() => goToScreen(3)}>
           이 제품으로 시작하기
         </button>
       </div>
@@ -314,7 +304,7 @@ export default function App() {
           </>
         )}
 
-        <button className="btn-primary" onClick={() => goToScreen(4)}>
+        <button className="btn-primary" data-text="Heritage Lock 설정하기" onClick={() => goToScreen(4)}>
           Heritage Lock 설정하기
         </button>
       </div>
@@ -378,7 +368,7 @@ export default function App() {
           </div>
         </div>
 
-        <button className="btn-primary" disabled={selectedDnaIds.length === 0} onClick={() => goToScreen(5)}>
+        <button className="btn-primary" data-text="미래 환경 선택하기" disabled={selectedDnaIds.length === 0} onClick={() => goToScreen(5)}>
           미래 환경 선택하기
         </button>
       </div>
@@ -428,7 +418,7 @@ export default function App() {
           ))}
         </div>
 
-        <button className="btn-primary" disabled={!selectedContextId} onClick={handleGenerate}>
+        <button className="btn-primary" data-text="2076년 제품 생성하기" disabled={!selectedContextId} onClick={handleGenerate}>
           2076년 제품 생성하기
         </button>
       </div>
