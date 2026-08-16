@@ -26,6 +26,34 @@ const INITIAL_PRODUCTS = [
   }
 ];
 
+// 가방 제품별 DNA 및 Heritage Lock 목업 데이터
+const PRODUCT_DNA_DATA = {
+  1: {
+    dna: [
+      { id: 1, name: "VISETOS", ratio: 37, description: "MCM을 즉시 인식하게 하는 시그니처 모노그램" },
+      { id: 2, name: "MOBILITY", ratio: 29, description: "여행과 이동이라는 MCM의 본질적인 가치" },
+      { id: 3, name: "COGNAC COLOR", ratio: 22, description: "브랜드 헤리티지를 보여주는 따뜻한 코냑 색감" },
+      { id: 4, name: "GEOMETRIC STRUCTURE", ratio: 12, description: "트렁크에서 이어지는 입체적이고 기하학적인 형태" }
+    ]
+  },
+  2: {
+    dna: [
+      { id: 1, name: "VISETOS", ratio: 34, description: "MCM을 즉시 인식하게 하는 시그니처 모노그램" },
+      { id: 2, name: "VISIBLE IDENTITY", ratio: 28, description: "도시적 이동성과 대담한 브랜드 상징성" },
+      { id: 3, name: "METAL STUDS", ratio: 23, description: "피라미드 스터드로 표현하는 대담한 디테일" },
+      { id: 4, name: "MOBILITY", ratio: 15, description: "여행과 이동이라는 MCM의 본질적인 가치" }
+    ]
+  },
+  3: {
+    dna: [
+      { id: 1, name: "VISETOS", ratio: 35, description: "MCM을 즉시 인식하게 하는 시그니처 모노그램" },
+      { id: 2, name: "CULTURAL COLLABORATION", ratio: 30, description: "음악 및 스트리트 문화와의 자유로운 융합" },
+      { id: 3, name: "MIAMI BLUE", ratio: 20, description: "선명하고 에너제틱한 시그니처 컬러" },
+      { id: 4, name: "ADAPTIVE STYLING", ratio: 15, description: "상황에 따라 다채롭게 변형되는 크로스바디 파우치 형태" }
+    ]
+  }
+};
+
 export default function App() {
   const [currentScreen, setCurrentScreen] = useState(1);
   const [currentTime, setCurrentTime] = useState('');
@@ -88,15 +116,17 @@ export default function App() {
   };
 
   // ==========================================
-  // [API 2] DNA 분석 비율 조회
+  // [API 2] DNA 분석 비율 조회 (가방 선택에 따라 다르게 분기)
   // ==========================================
   const fetchDnaAnalysis = async (productId) => {
-    const fallbackDna = [
-      { name: "VISETOS", ratio: 34 },
-      { name: "COGNAC COLOR", ratio: 28 },
-      { name: "MOBILITY", ratio: 23 },
-      { name: "VISIBLE IDENTITY", ratio: 15 }
-    ];
+    // 가방 ID별로 데이터 추출
+    const selectedData = PRODUCT_DNA_DATA[productId]?.dna || PRODUCT_DNA_DATA[1].dna;
+    
+    const fallbackDna = selectedData.map(item => ({
+      id: item.id,
+      name: item.name,
+      ratio: item.ratio
+    }));
 
     const applyProgressAnimation = (analysisData) => {
       setDnaProgressValues(analysisData.map(() => 0));
@@ -128,15 +158,16 @@ export default function App() {
   };
 
   // ==========================================
-  // [API 3] Heritage Lock 옵션 조회
+  // [API 3] Heritage Lock 옵션 조회 (선택된 가방 DNA 연동)
   // ==========================================
   const fetchHeritageLocks = async (productId) => {
-    const fallbackLocks = [
-      { id: 1, name: "Visetos", description: "MCM을 즉시 인식하게 하는 시그니처 모노그램" },
-      { id: 2, name: "Cognac Color", description: "브랜드 헤리티지를 보여주는 따뜻한 코냑 색감" },
-      { id: 3, name: "Mobility", description: "여행과 이동이라는 MCM의 본질적인 가치" },
-      { id: 4, name: "Structure", description: "트렁크에서 이어지는 입체적이고 기하학적인 형태" }
-    ];
+    const selectedData = PRODUCT_DNA_DATA[productId]?.dna || PRODUCT_DNA_DATA[1].dna;
+
+    const fallbackLocks = selectedData.map(item => ({
+      id: item.id,
+      name: item.name,
+      description: item.description
+    }));
 
     if (!API_BASE_URL) {
       setHeritageLocks(fallbackLocks);

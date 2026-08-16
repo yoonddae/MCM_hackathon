@@ -56,7 +56,11 @@ html, body, #root {
   left: 0;
   margin: 0 !important;
   padding: 0 !important;
-  background: var(--bg-gradient);
+  background: 
+    radial-gradient(circle at 100% 0%, rgba(220, 242, 254, 0.85) 0%, transparent 50%),
+    radial-gradient(circle at 0% 100%, rgba(254, 243, 199, 0.75) 0%, transparent 45%),
+    linear-gradient(180deg, #F0F9FF 0%, #FFFFFF 50%, #FFFBEB 100%);
+    
   overflow-x: hidden;
   overflow-y: hidden;
   box-shadow: none;
@@ -159,7 +163,7 @@ html, body, #root {
 
 /* ★ Typography 키움 & 좌측 정렬 지정 */
 .sub-caption {
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 800;
   letter-spacing: 1.2px;
   color: #38bdf8;
@@ -168,7 +172,7 @@ html, body, #root {
 }
 
 .page-title {
-  font-size: 32px;
+  font-size: 38px;
   font-weight: 900;
   line-height: 1.35;
   color: var(--text-main);
@@ -177,7 +181,7 @@ html, body, #root {
 }
 
 .page-desc {
-  font-size: 14px;
+  font-size: 16px;
   color: #64748b;
   line-height: 1.55;
   margin-bottom: 22px;
@@ -432,7 +436,7 @@ html, body, #root {
 }
 
 .home-title {
-  font-size: 30px;
+  font-size: 38px;
   font-weight: 900;
   line-height: 1.25;
   color: var(--text-main);
