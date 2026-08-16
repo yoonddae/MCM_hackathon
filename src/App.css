@@ -423,16 +423,23 @@ html, body, #root {
   object-fit: contain;
 }
 
+/* 1. 부모 컨테이너 정렬 설정 */
 .home-hero {
-  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .home-sub {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 800;
   letter-spacing: 1.2px;
   color: #38bdf8;
-  margin-bottom: 12px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+  display: inline-block;
 }
 
 .home-title {
