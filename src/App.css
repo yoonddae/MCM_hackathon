@@ -86,6 +86,7 @@ body {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 12px;
+  width: 100%;
 }
 
 .header-left {
@@ -176,8 +177,18 @@ body {
   margin-bottom: 20px;
 }
 
+/* 2페이지 & 3페이지 텍스트 좌측 정렬 */
+#screen2 .sub-caption,
+#screen2 .page-title,
+#screen2 .page-desc,
+#screen3 .sub-caption,
+#screen3 .page-title,
+#screen3 .page-desc {
+  text-align: left;
+}
+
 /* =========================================================
-   3. 메인 버튼 (.btn-primary) - 오로라 색감 & 누르기 전 평범한 상태
+   3. 메인 버튼 (.btn-primary) - 기존 동일 유지
    ========================================================= */
 .btn-primary {
   width: 100%;
@@ -185,7 +196,6 @@ body {
   border-radius: 22px;
   border: 1px solid rgba(255, 255, 255, 0.9);
   
-  /* 영상 속 파스텔 오로라 톤 (라이트블루 ~ 보라 ~ 핑크) */
   background: linear-gradient(
     90deg,
     #7dd3fc 0%,
@@ -213,7 +223,6 @@ body {
   transition: transform 0.15s ease, box-shadow 0.2s ease;
 }
 
-/* 버튼 내 data-text 속성의 글자를 자동으로 읽어오는 찢어짐 레이어 */
 .btn-primary::before,
 .btn-primary::after {
   content: attr(data-text);
@@ -231,7 +240,6 @@ body {
   pointer-events: none;
 }
 
-/* 누르기 전에는 평범한 상태 유지 / 클릭 시(:active)에만 지지직 모션 발동 */
 .btn-primary:active,
 .btn-primary.glitching {
   transform: scale(0.97) translate(-1px, 1px) !important;
@@ -251,7 +259,6 @@ body {
   animation: glitchSlice2 0.15s infinite linear !important;
 }
 
-/* 비활성화 상태 */
 .btn-primary:disabled {
   opacity: 0.4;
   cursor: not-allowed;
@@ -377,25 +384,26 @@ body {
   justify-content: space-between;
 }
 
+/* 1페이지 로고 박스 (네모틀에 이미지 꽉 차게 변경) */
 .mcm-logo-box {
   width: 220px;
   height: 220px;
-  background: linear-gradient(135deg, rgba(224, 242, 254, 0.85) 0%, rgba(221, 214, 254, 0.85) 100%);
   border-radius: 48px;
+  overflow: hidden; /* 이미지 튀어나옴 방지 */
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 20px 40px rgba(186, 230, 253, 0.5);
   margin-top: 24px;
   margin-bottom: 20px;
-  padding: 16px;
+  padding: 0; /* 여백 제거 */
   border: 4px solid #ffffff;
 }
 
 .mcm-logo-box img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover; /* 네모틀에 여백없이 꽉 차도록 설정 */
 }
 
 .home-hero {
@@ -473,6 +481,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 4px;
+  text-align: left;
 }
 
 .card-title {
@@ -691,6 +700,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  text-align: left;
 }
 
 .env-title {

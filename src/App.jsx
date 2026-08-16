@@ -160,6 +160,7 @@ export default function App() {
 
       {/* SCREEN 1: Onboarding */}
       <div className={`screen ${currentScreen === 1 ? 'active' : ''}`} id="screen1">
+        {/* 요청 2: 1페이지 상단 onboarding을 좌측으로, 시간을 우측으로 설정 */}
         <header className="top-header">
           <div className="header-left">
             <span className="num-badge">01</span>
@@ -170,8 +171,9 @@ export default function App() {
           </div>
         </header>
 
+        {/* 요청 1: 1페이지 로고 네모틀에 꽉 차도록 설정 완료 */}
         <div className="mcm-logo-box">
-          <img src="/mcm_logo.png" alt="MCM Logo" onError={(e) => (e.target.src = 'https://via.placeholder.com/100?text=MCM')} />
+          <img src="/mcm_logo.png" alt="MCM Logo" onError={(e) => (e.target.src = 'https://via.placeholder.com/220?text=MCM')} />
         </div>
         <div className="home-hero">
           <div className="home-sub">FROM HERITAGE TO THE NEXT CENTURY</div>
@@ -213,6 +215,7 @@ export default function App() {
           ← 이전 단계
         </button>
 
+        {/* 요청 3: 2페이지 글씨 좌측 붙임 */}
         <div>
           <div className="sub-caption">ARCHIVE 1976–2026</div>
           <h1 className="page-title">어떤 MCM에서 시작할까요?</h1>
@@ -226,7 +229,7 @@ export default function App() {
               className={`product-card ${selectedProductId === prod.id ? 'selected' : ''}`}
               onClick={() => {
                 setSelectedProductId(prod.id);
-                setSelectedDnaIds([]); // 제품이 바뀌면 선택된 DNA 초기화
+                setSelectedDnaIds([]);
               }}
             >
               <div className="card-img-wrap">
@@ -273,6 +276,7 @@ export default function App() {
           ← 이전 단계
         </button>
 
+        {/* 요청 4: 3페이지 글씨 좌측 붙임 */}
         <div>
           <div className="sub-caption">HERITAGE ANALYSIS</div>
           <h1 className="page-title">이 제품의 DNA를 분해해볼게요</h1>
