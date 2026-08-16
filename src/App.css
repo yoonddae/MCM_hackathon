@@ -517,9 +517,10 @@ html, body, #root {
   font-weight: 800;
   color: #0284c7;
   background: #e0f2fe;
-  padding: 3px 8px;
-  border-radius: 6px;
+  padding: 4px 10px;
+  border-radius: 14px; /* 더 둥글게 보정 */
   text-transform: uppercase;
+  letter-spacing: 0.3px;
 }
 
 /* PAGE 3: DNA Decode */
@@ -589,9 +590,7 @@ html, body, #root {
   transition: width 1s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* =========================================================
-   PAGE 4: Heritage Lock (수정 완료)
-   ========================================================= */
+/* PAGE 4: Heritage Lock */
 .dna-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -603,7 +602,7 @@ html, body, #root {
   width: 100%;
   background: #ffffff;
   border: 1.5px solid #e2e8f0;
-  border-radius: 22px;
+  border-radius: 28px; /* 더 둥글게 보정 */
   padding: 18px 16px;
   display: flex;
   flex-direction: column;
@@ -641,10 +640,10 @@ html, body, #root {
   font-weight: 800;
   color: #0284c7;
   background: #e0f2fe;
-  padding: 3px 8px;
-  border-radius: 12px;
+  padding: 4px 10px;
+  border-radius: 20px; /* 더 둥글게 보정 */
   display: none;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.4px;
 }
 
 .dna-lock-card.selected .locked-badge {
@@ -661,7 +660,7 @@ html, body, #root {
 .locked-summary-box {
   background: linear-gradient(180deg, #fffcf6 0%, #fbf5ee 100%);
   border: 1px solid #f1e4d3;
-  border-radius: 20px;
+  border-radius: 24px; /* 더 둥글게 보정 */
   padding: 16px 20px;
   text-align: left;
   margin-bottom: 20px;
