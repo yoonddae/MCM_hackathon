@@ -295,7 +295,7 @@ export default function App() {
         </header>
 
         <div className="mcm-logo-box">
-          <img src="/mcm_logo.png" alt="MCM Logo" onError={(e) => (e.target.src = 'https://via.placeholder.com/220?text=MCM')} />
+          <img src="/images/mcm_logo.png" alt="MCM Logo" onError={(e) => (e.target.src = 'https://via.placeholder.com/220?text=MCM')} />
         </div>
         <div className="home-hero">
           <div className="home-sub">FROM HERITAGE TO THE NEXT CENTURY</div>
@@ -354,7 +354,7 @@ export default function App() {
               }}
             >
               <div className="card-img-wrap">
-                <img src={prod.img || `/p2_image${prod.id}_2.png`} alt={prod.name} onError={(e) => (e.target.src = 'https://via.placeholder.com/90?text=MCM')} />
+                <img src={prod.img || `/images/p2_image${prod.id}_2.png`} alt={prod.name} onError={(e) => (e.target.src = 'https://via.placeholder.com/90?text=MCM')} />
               </div>
               <div className="card-info">
                 <div className="card-title">{prod.name}</div>
@@ -407,7 +407,7 @@ export default function App() {
           <>
             <div className="product-display-card">
               <div className="display-img-box">
-                <img src={currentProduct.img || `/p2_image${currentProduct.id}_2.png`} alt={currentProduct.name} />
+                <img src={currentProduct.img || `/images/p2_image${currentProduct.id}_2.png`} alt={currentProduct.name} />
               </div>
               <div className="display-title">{currentProduct.name}</div>
             </div>

@@ -396,27 +396,28 @@ html, body, #root {
   justify-content: space-between;
 }
 
+/* ★ 1. 첫 번째 화면 로고 짤림 없이 딱 맞게 보정 */
 .mcm-logo-box {
-  width: 220px;
-  height: 220px;
-  border-radius: 48px;
+  width: 200px;
+  height: 200px;
+  border-radius: 36px;
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 20px 40px rgba(186, 230, 253, 0.5);
+  box-shadow: 0 16px 36px rgba(186, 230, 253, 0.4);
   margin-top: 24px;
   margin-bottom: 20px;
-  padding: 0;
-  border: 4px solid #ffffff;
+  padding: 16px;
+  border: 2px solid #ffffff;
   background: #ffffff;
 }
 
 .mcm-logo-box img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  transform: scale(1.35);
+  object-fit: contain; /* 넘치지 않고 딱 맞게 배치 */
+  transform: scale(1);
 }
 
 .home-hero {
@@ -512,18 +513,22 @@ html, body, #root {
 .tag-group {
   display: flex;
   gap: 6px;
-  margin-top: 2px;
+  margin-top: 4px;
+  flex-wrap: wrap;
 }
 
+/* ★ 2. 2페이지 태그: 글씨 크기 및 길이에 딱 맞춰 조절 */
 .tag {
+  display: inline-block;
   font-size: 10px;
   font-weight: 800;
   color: #0284c7;
   background: #e0f2fe;
-  padding: 2px 8px;
-  border-radius: 12px;
+  padding: 2px 6px; /* 글씨에 꼭 맞춘 패딩 */
+  border-radius: 6px;
   text-transform: uppercase;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.2px;
+  line-height: 1.2;
 }
 
 /* PAGE 3: DNA Decode */
@@ -605,14 +610,14 @@ html, body, #root {
   width: 100%;
   background: #ffffff;
   border: 1.5px solid #e2e8f0;
-  border-radius: 20px;
-  padding: 12px 14px;
+  border-radius: 18px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
   text-align: left;
-  min-height: 100px;
+  min-height: 96px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -632,21 +637,23 @@ html, body, #root {
 }
 
 .dna-card-title {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 800;
   color: var(--text-main);
   letter-spacing: -0.3px;
 }
 
+/* ★ 2. 4페이지 LOCKED 배지: 글자 크기에 맞춰 아담하게 조절 */
 .locked-badge {
-  font-size: 10px;
+  display: none;
+  font-size: 9px;
   font-weight: 800;
   color: #0284c7;
   background: #e0f2fe;
-  padding: 2px 8px;
-  border-radius: 12px;
-  display: none;
-  letter-spacing: 0.3px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  letter-spacing: 0.2px;
+  line-height: 1.1;
 }
 
 .dna-lock-card.selected .locked-badge {
@@ -656,11 +663,10 @@ html, body, #root {
 .dna-card-desc {
   font-size: 12px;
   color: #64748b;
-  line-height: 1.45;
+  line-height: 1.4;
   text-align: left;
 }
 
-/* ★ Locked DNA 박스: 파랑 + 코냑/노랑 파스텔 그라데이션 적용 */
 .locked-summary-box {
   background: linear-gradient(135deg, #f0f9ff 0%, #fffbf2 60%, #fef3c7 100%);
   border: 1.5px solid #bae6fd;
